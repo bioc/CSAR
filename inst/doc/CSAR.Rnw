@@ -1,0 +1,97 @@
+%\VignetteIndexEntry{CSAR Vignette}
+%\VignetteDepends{CSAR}
+%\VignetteKeywords{ChIPseq,Transcription,Genetics}
+%\VignettePackage{CSAR}
+\documentclass{article}
+
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Rmethod}[1]{{\texttt{#1}}}
+\newcommand{\Rcode}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textsf{#1}}}
+\newcommand{\Rclass}[1]{{\textit{#1}}}
+\newcommand{\CSAR}{\Rpackage{CSAR }}
+
+\usepackage{graphicx}
+
+\begin{document}
+\title{An Introduction to the CSAR Package}
+\date{November, 2009}
+\author{Jose M Muino\footnote{jose.muino@wur.nl}}
+\maketitle
+\begin{center}
+Applied Bioinformatics\\Plant Research International, Wageningen UR\\Wageningen, The Netherlands
+\end{center}
+
+<<setup, echo=FALSE, results=hide>>=
+options(width=60)
+options(continue=" ")
+options(prompt="R> ")
+@ 
+
+\section{Introduction}
+We present here a R package for the statistical detection of protein-bound genomic regions, where, considering the average DNA fragment size submitted to sequencing, single-nucleotide enrichment values are obtained. After normalization, sample and control are compared using a test based on the Poisson distribution. Test statistic thresholds to control false discovery rate are obtained through random permutation. The computational efficiency is achieved implanting the most time-consuming functions in C++ language, and integrating them in the R package. Standard outputs of the package are tables of genomic coordinates of significantly enriched region locations, level of enrichment per nucleotide position and the distance of enriched regions to annotated genomic features.
+The algorithm is described in detail in \cite{Kaufmann2009}, \cite{KaufmannAccepted}, \cite{MuinoSubmitted}.
+
+\section{Methods}
+
+	Due to PCR artifacts a high number of reads  can represent the same sequence.  The elimination of these duplicated reads usually leads to a 15\%-25\% data reduction in a standard plant ChIP-seq experiment. This artifact is strand dependent, therefore CSAR requests that the number of extended reads that overlap a given nucleotide position should be supported by both strands independently. This is achieved by virtually  extending the mapped reads to a length of 300 bp (the average DNA fragment length submitted to the sequence process) for each strand independently, and after taken the minimum value for both strand at each nucleotide position.
+
+Before test enrichment between sample and control, the number of overlapped reads distribution of the sample is normalize to have the same mean and variance that the control.. Subsequently,  a score enrichment is calculated based on the Poisson test or in the ratio.
+
+Permutation is applied to calculate the FDR thresholds. The mapped reads are randomly permutated between the control and sample group, and new scores are calculated for this new permutated dataset. The procedure is repeated until have a enough number of permutated scores. This scores are used to calculate the FDR thresholds.
+
+
+\section{Example}
+
+We will use a dataset included in the \CSAR package for this demonstration. The data represent a subset of the sequenced reads for a SEP3 ChIP-seq experiment \cite{Kaufmann2009} in $Arabidopsis$.
+
+First, we load the \CSAR package and the data \Rclass{CSAR-dataset}. We run the \Rclass{mappedReads2Nhits} function to calculate the number of hits (number of extended reads that overlap a particular position) per nucleotide position for the control and sample dataset. See function \Rclass{mappedReads2Nhits} for more information about the parameter values.
+
+<<loadData>>=
+library(CSAR)
+data("CSAR-dataset");
+head(sampleSEP3_test)
+head(controlSEP3_test)
+nhitsS<-mappedReads2Nhits(sampleSEP3_test,chr=c("CHR1v01212004"),chrL=c(100000))
+nhitsC<-mappedReads2Nhits(controlSEP3_test,chr=c("CHR1v01212004"),chrL=c(100000))
+@
+
+After, we run the function \Rclass{ChIPseqScore} to calculate the read-enrichment score of the sample compared to the control for each nucleotide position. \Rclass{sigWin} will generate candidate read-enriched regions, and \Rclass{score2wig} will generate a wig file that can be read by standard genome browsers.
+\Rclass{distance2Genes} function will report the relative position of candidate read-enriched regions regarding the start and end position of the annotated genes.
+\Rclass{genesWithPeaks} function will report genes with a candidate enriched region located near them.
+
+<<runScore>>=
+test<-ChIPseqScore(control=nhitsC,sample=nhitsS)
+win<-sigWin(test)
+head(win)
+#score2wig(test,file="test.wig")
+d<-distance2Genes(win=win,gff=TAIR8_genes_test)
+head(d)
+genes<-genesWithPeaks(d)
+head(genes)
+@ 
+
+We obtain with eah run of the function \Rclass{permutatedWinScores} one set of permutated scores. Later,we can get the distribution of score values after permutation with the function \Rclass{getPermutatedWinScores}.
+From this distribution, several cut-off values can be calculated to control the error of our test using functions implemented in R. In this package, it is implemented a control of the error based on FDR using the function \Rclass{getThreshold}. 
+
+<<runPermutation>>=
+permutatedWinScores(nn=1,sample=sampleSEP3_test,control=controlSEP3_test,fileOutput="test",chr=c("CHR1v01212004"),chrL=c(100000))
+permutatedWinScores(nn=2,sample=sampleSEP3_test,control=controlSEP3_test,fileOutput="test",chr=c("CHR1v01212004"),chrL=c(100000))
+nulldist<-getPermutatedWinScores(file="test",nn=1:2)
+getThreshold(winscores=win$score,permutatedScores=nulldist,FDR=.01)
+@
+This is a very simple function to obtain the threshold value of our test statistic controlling FDR at a desired level. Basically, for each possible threshold value, the proportion of error type I is calculated assuming that  the permutated score distribution is a optimal estimation of the score distribution under the null hypothesis, and FDR is obtained as the ratio of the proportion of error type I by the proportion of significant tests. Other functions implemented in R (eg: \Rclass{multtest} ) could be less conservative.
+\bibliography{CSARVignette}{}
+\bibliographystyle{plain}
+ 
+\section{Details}
+
+This document was written using:
+
+<<>>=
+sessionInfo()
+@ 
+
+
+\end{document}

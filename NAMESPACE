@@ -1,0 +1,4 @@
+useDynLib(CSAR)
+exportPattern("^[^\\.]")
+importFrom(stats, ppois, var)
+importFrom(utils, read.table, write.table)
