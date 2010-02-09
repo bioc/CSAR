@@ -3,25 +3,29 @@ function(win,gff,t= -log(0.05),d1=-3000,d2=1000){
 win<-win[win$score>t,]
 ## I can not know the final length of res, it will depends about how close the peaks and genes are.
 res<-c()
-for (i in 1:length(gff$V1)){
-temp<-win[as.character(win$chr)==as.character(gff$V1[i]),]
-name<-paste(temp$chr,temp$posPeak,sep="_")
-if(gff$V7[i]=="+"){
-tempPos1<-temp$posPeak-gff$V4[i]
-tempPos2<-temp$posPeak-gff$V5[i]
-t<-data.frame(peakName=name,p1=tempPos1,p2=tempPos2,score=temp$score, gene=rep(as.character(gff$V9[i]),length(name)),le=rep(abs(gff$V4[i]-gff$V5[i]),length(name)))
-t<-t[t$p1>=d1 & t$p2<=d2,]
-}
-if(gff$V7[i]=="-"){
-tempPos1<- -temp$posPeak+gff$V5[i]
-tempPos2<- -temp$posPeak+gff$V4[i]
-t<-data.frame(peakName=name,t1=tempPos1,t2=tempPos2,score=temp$score, gene=rep(gff$V9[i],length(name)),le=rep(abs(gff$V4[i]-gff$V5[i]),length(name)))
-t<-t[t$p1>=d1 & t$p2<=d2,]
-}
-if(length(t)>0){
+
+for (chr in unique(as.character(win$chr))){
+tempwin<-win[as.character(win$chr)==chr,]
+tempgff<-gff[as.character(gff$V1)==chr,]
+
+
+for (i in 1:length(tempwin$posPeak)){
+
+name<-paste(chr,tempwin$posPeak[i],sep="_")
+tempPos1<-tempwin$posPeak[i]-tempgff$V4
+tempPos2<-tempwin$posPeak[i]-tempgff$V5
+temp<-tempPos1
+tempPos1[tempgff$V7=="-"]<-tempPos2[tempgff$V7=="-"]* -1
+tempPos2[tempgff$V7=="-"]<-temp[tempgff$V7=="-"]* -1
+rm(temp)
+whichPos=(tempPos1>=d1 & tempPos2<=d2)
+if(is.element(TRUE,whichPos)){
+t<-data.frame(peakName=name,p1=tempPos1[whichPos],p2=tempPos2[whichPos],score=tempwin$score[i], gene=as.character(tempgff$V9[whichPos]),le=abs((tempgff$V4-tempgff$V5)[whichPos]))
 res<- rbind(res,t)
 }
 }
-return(res)
+
 }
 
+return(res)
+}
