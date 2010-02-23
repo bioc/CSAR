@@ -1,9 +1,7 @@
 `score_chr` <-
 function(norm1,norm2,sa,con,t=-1,backg=1,test="Poisson"){
-if(is.na(norm1) | is.na(norm2)){
-norm1<-(var(con)/var(sa))^.5;norm2<- -mean(sa*(var(con)/var(sa))^.5)+mean(con)
-}
-sa<-sa*norm1+norm2
+
+sa<-(sa+norm2)*norm1
 sa.nnucs<-sum(sa)
 con.nnucs<-sum(con)
 ##Apply quantile normalization ???

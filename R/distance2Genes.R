@@ -5,6 +5,7 @@ win<-win[win$score>t,]
 peakName<-c();p1<-c();p2<-c();score<-c();gene<-c();le<-c();
 
 for (chr in unique(as.character(win$chr))){
+message(paste("Starting",chr,"..."))
 tempwin<-win[as.character(win$chr)==chr,]
 tempgff<-gff[as.character(gff$V1)==chr,]
 tempgff$V9<-as.character(tempgff$V9)
