@@ -1,5 +1,4 @@
 \name{ChIPseqScore}
-\alias{normNhits}
 \alias{ChIPseqScore}
 \alias{score_chr}
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -8,7 +7,7 @@
   Calculate read-enrichment scores for each nucleotide position
 }
 \usage{
-ChIPseqScore(control, sample, backg = 1, file = NA, norm = 300 * 10^6, chr = NA, normEachChrInd = FALSE, test = "Poisson")
+ChIPseqScore(control, sample, backg = 1, file = NA, norm = 300 * 10^6, chr = NA,  test = "Poisson")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -18,7 +17,6 @@ ChIPseqScore(control, sample, backg = 1, file = NA, norm = 300 * 10^6, chr = NA,
   \item{file}{ Name of the file where you wan to save the results (if desired) }
   \item{norm}{ Integer value. Number of hits will be reported by number of hits per \code{norm} nucleotides }
   \item{chr}{ Names of the chromosomes to be considered }
-  \item{normEachChrInd}{ Apply the normalization for each chromosome independently or not }
   \item{test}{Use a score based on the poisson distribution ("Poisson") or in the ratio ("Ratio") }
 }
 

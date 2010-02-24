@@ -6,7 +6,7 @@
 Calculate scores for permutated read-enriched regions
 }
 \usage{
-permutatedWinScores(nn = 1, control, sample, fileOutput, chr = c("chr1", "chr2", "chr3", "chr4", "chr5"), chrL = "TAIR8", w = 300, considerStrand = "Minimum", uniquelyMapped = TRUE, uniquePosition = FALSE, normEachChrInd = FALSE, norm = 300 * 10^6, backg = 1, t = 2.9, g = 100)
+permutatedWinScores(nn = 1, control, sample, fileOutput, chr = c("chr1", "chr2", "chr3", "chr4", "chr5"), chrL = "TAIR8", w = 300, considerStrand = "Minimum", uniquelyMapped = TRUE, uniquePosition = FALSE, norm = 300 * 10^6, backg = 1, t = 2.9, g = 100)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -29,7 +29,6 @@ permutatedWinScores(nn = 1, control, sample, fileOutput, chr = c("chr1", "chr2",
   }
   \item{uniquelyMapped}{  Logic value, If TRUE, only consider unquely mapped reads. }
   \item{uniquePosition}{ Logic value. If TRUE, only consider reads mapped in different positions. }
-  \item{normEachChrInd}{  Logic value. Apply the normalization for each chromosome independently or not }
   \item{norm}{ Integer value. Number of hits will be reported by number of hits per \code{norm} nucleotides }
   \item{backg}{ Any region with a hit value lower than \code{backg} in the \code{control} will be set to the value of \code{backg} }
   \item{t}{Numeric value. Read-enriched regions are calculated as genomic regions with score values bigger than \code{t}  }
