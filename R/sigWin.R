@@ -1,21 +1,17 @@
 `sigWin` <-
-function(experiment,t=-log(0.05),g=100,file=NA){
-chr<-labels(experiment$score)
-#It is difficult to calculate the number of rows that "fin" will have
+function(experiment,t=-log(0.05),g=100){
+dig<-10^experiment$digits
+t<-as.integer(t*dig);g<-as.integer(round(g));
 fin<-c()
-for (i in chr){
-x<-experiment$score[[i]]
+for (i in 1:length(experiment$chr)){
+x<-as.integer(LoadBinCSAR(experiment$filenames[i]))
 res<-sigWin_chr(count=x,t=t,g=g)
-res<-cbind(rep(i,length(res[,1])),res)
+res<-data.frame(chr=experiment$chr[i],res)
 fin<-rbind(fin,res)
+message(paste(experiment$chr[i],"done..."))
 }
-names(fin)<-c("chr","start","end","posPeak","score","length")
-if(is.na(file)){
+rm(x);gc(verbose=FALSE)
+fin$score<-fin$score/dig
 return(fin)
-}
-else{
-
-write.table(fin,file=file,quote=FALSE,row.names=FALSE)
-}
 }
 

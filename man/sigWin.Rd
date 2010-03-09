@@ -7,14 +7,14 @@
   Calculate regions of read-enrichment
 }
 \usage{
-sigWin(experiment, t = -log(0.05), g = 100, file = NA)
+sigWin(experiment, t = -log(0.05), g = 100)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{experiment}{ Output of the function \code{ChIPseqScore}}
   \item{t}{ Numeric value. Read-enriched regions are calculated as genomic regions with score values bigger than \code{t} }
   \item{g}{ Integer value. The maximum gap allowed between regions. Regions that are less than \code{g} bps away will be merged.  }
-  \item{file}{ Name of the file where the results will be saved. A NA value means that the results will be not saved in a file  }
+  
 }
 
 \value{
@@ -36,8 +36,9 @@ Kaufmann et al.(2009).Target genes of the MADS transcription factor SEPALLATA3: 
 ##For this example we will use the a subset of the SEP3 ChIP-seq data (Kaufmann, 2009)
 data("CSAR-dataset");
 ##We calculate the number of hits for each nucleotide posotion for the control and sample. We do that just for chromosome chr1, and for positions 1 to 10kb
-nhitsS<-mappedReads2Nhits(sampleSEP3_test,chr=c("CHR1v01212004"),chrL=c(10000))
-nhitsC<-mappedReads2Nhits(controlSEP3_test,chr=c("CHR1v01212004"),chrL=c(10000))
+nhitsS<-mappedReads2Nhits(sampleSEP3_test,file="sampleSEP3_test",chr=c("CHR1v01212004"),chrL=c(10000))
+nhitsC<-mappedReads2Nhits(controlSEP3_test,file="controlSEP3_test",chr=c("CHR1v01212004"),chrL=c(10000))
+
 
 ##We calculate a score for each nucleotide position
 test<-ChIPseqScore(control=nhitsC,sample=nhitsS)

@@ -44,42 +44,47 @@ Permutation is applied to calculate the FDR thresholds. The mapped reads are ran
 
 \section{Example}
 
-We will use a dataset included in the \CSAR package for this demonstration. The data represent a subset of the sequenced reads for a SEP3 ChIP-seq experiment \cite{Kaufmann2009} in $Arabidopsis$.
+We will use a dataset included in the \CSAR package for this demonstration. The data represent a small subset of a SEP3 ChIP-seq experiment in $Arabidopsis$ \cite{Kaufmann2009}.
 
-First, we load the \CSAR package and the data \Rclass{CSAR-dataset}. We run the \Rclass{mappedReads2Nhits} function to calculate the number of hits (number of extended reads that overlap a particular position) per nucleotide position for the control and sample dataset. See function \Rclass{mappedReads2Nhits} for more information about the parameter values.
+First, we load the \CSAR package and the data \Rclass{CSAR-dataset}. We use the \Rclass{mappedReads2Nhits} function to calculate the number of hits (number of extended reads that overlap a particular position) per nucleotide position for the control and sample dataset. The results for each chromosome are saved in a file with the name of the chromosome and the tag used in the parameter \Rclass{file} See function \Rclass{mappedReads2Nhits} for more information about the parameter values.
 
 <<loadData>>=
 library(CSAR)
 data("CSAR-dataset");
 head(sampleSEP3_test)
 head(controlSEP3_test)
-nhitsS<-mappedReads2Nhits(sampleSEP3_test,chr=c("CHR1v01212004"),chrL=c(100000))
-nhitsC<-mappedReads2Nhits(controlSEP3_test,chr=c("CHR1v01212004"),chrL=c(100000))
+nhitsS<-mappedReads2Nhits(sampleSEP3_test,file="sampleSEP3_test",chr=c("CHR1v01212004"),chrL=c(10000))
+nhitsC<-mappedReads2Nhits(controlSEP3_test,file="controlSEP3_test",chr=c("CHR1v01212004"),chrL=c(10000))
+nhitsC$filenames
+nhitsS$filenames
 @
 
-After, we run the function \Rclass{ChIPseqScore} to calculate the read-enrichment score of the sample compared to the control for each nucleotide position. \Rclass{sigWin} will generate candidate read-enriched regions, and \Rclass{score2wig} will generate a wig file that can be read by standard genome browsers.
+The variable nhitsC and nhitsS will have the needed information to use with the function \Rclass{ChIPseqScore} in order to calculate the read-enrichment score of the sample compared to the control for each nucleotide position. 
+The results are saved in one file per each chromosome. 
+\Rclass{sigWin} will generate candidate read-enriched regions, and \Rclass{score2wig} will generate a wig file that can be read by standard genome browsers.
 \Rclass{distance2Genes} function will report the relative position of candidate read-enriched regions regarding the start and end position of the annotated genes.
 \Rclass{genesWithPeaks} function will report genes with a candidate enriched region located near them.
 
 <<runScore>>=
-test<-ChIPseqScore(control=nhitsC,sample=nhitsS)
+test<-ChIPseqScore(control=nhitsC,sample=nhitsS,file="test",times=10000)
+test$filenames
 win<-sigWin(test)
 head(win)
-#score2wig(test,file="test.wig")
+score2wig(test,file="test.wig",times=10000)
 d<-distance2Genes(win=win,gff=TAIR8_genes_test)
 head(d)
 genes<-genesWithPeaks(d)
 head(genes)
 @ 
 
-We obtain with eah run of the function \Rclass{permutatedWinScores} one set of permutated scores. Later,we can get the distribution of score values after permutation with the function \Rclass{getPermutatedWinScores}.
+With each run of the function \Rclass{permutatedWinScores} one set of permutated scores is generated. Later, we can get the distribution of score values with the function \Rclass{getPermutatedWinScores}.
 From this distribution, several cut-off values can be calculated to control the error of our test using functions implemented in R. In this package, it is implemented a control of the error based on FDR using the function \Rclass{getThreshold}. 
 
 <<runPermutation>>=
 permutatedWinScores(nn=1,sample=sampleSEP3_test,control=controlSEP3_test,fileOutput="test",chr=c("CHR1v01212004"),chrL=c(100000))
 permutatedWinScores(nn=2,sample=sampleSEP3_test,control=controlSEP3_test,fileOutput="test",chr=c("CHR1v01212004"),chrL=c(100000))
 nulldist<-getPermutatedWinScores(file="test",nn=1:2)
-getThreshold(winscores=win$score,permutatedScores=nulldist,FDR=.01)
+getThreshold(winscores=win$score,permutatedScores=nulldist,FDR=.05)
 @
 This is a very simple function to obtain the threshold value of our test statistic controlling FDR at a desired level. Basically, for each possible threshold value, the proportion of error type I is calculated assuming that  the permutated score distribution is a optimal estimation of the score distribution under the null hypothesis, and FDR is obtained as the ratio of the proportion of error type I by the proportion of significant tests. Other functions implemented in R (eg: \Rclass{multtest} ) could be less conservative.
 \bibliography{CSARVignette}{}

@@ -36,8 +36,9 @@ FDR is obtained as the ratio of the proportion of error type I by the proportion
 ##For this example we will use the a subset of the SEP3 ChIP-seq data (Kaufmann, 2009)
 data("CSAR-dataset");
 ##We calculate the number of hits for each nucleotide posotion for the control and sample. We do that just for chromosome chr1, and for positions 1 to 10kb
-nhitsS<-mappedReads2Nhits(sampleSEP3_test,chr=c("CHR1v01212004"),chrL=c(10000))
-nhitsC<-mappedReads2Nhits(controlSEP3_test,chr=c("CHR1v01212004"),chrL=c(10000))
+nhitsS<-mappedReads2Nhits(sampleSEP3_test,file="sampleSEP3_test",chr=c("CHR1v01212004"),chrL=c(10000))
+nhitsC<-mappedReads2Nhits(controlSEP3_test,file="controlSEP3_test",chr=c("CHR1v01212004"),chrL=c(10000))
+
 
 ##We calculate a score for each nucleotide position
 test<-ChIPseqScore(control=nhitsC,sample=nhitsS)

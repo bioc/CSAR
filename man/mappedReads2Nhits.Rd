@@ -10,7 +10,7 @@
   Calculate number of overlapped extended reads per nucleotide position
 }
 \usage{
-mappedReads2Nhits(input, file = NA, chr = c("chr1", "chr2", "chr3", "chr4", "chr5"), chrL = "TAIR8", w = 300, considerStrand = "Minimum", uniquelyMapped = TRUE, uniquePosition = FALSE)
+mappedReads2Nhits(input, file , chr = c("chr1", "chr2", "chr3", "chr4", "chr5"), chrL = "TAIR8", w = 300, considerStrand = "Minimum", uniquelyMapped = TRUE, uniquePosition = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -36,9 +36,13 @@ mappedReads2Nhits(input, file = NA, chr = c("chr1", "chr2", "chr3", "chr4", "chr
 
 \value{
 A list to be used for other functions of the CSAR package
-    \item{info }{Information about the mapping process}
-  \item{Nhits }{A list with a numeric vector per each chromosome. The numeric vector repesents the number of hits at each nucleotide position}
-  
+   \item{chr }{Chromosme names}
+	\item{chrL }{Chromosme length (bp)}
+	\item{chrL_0 }{Number of nucleotide positions with at least one extended read}
+	\item{chrL_0 }{Number of nucleotide positions with at least one extended read}
+	\item{filenames }{Name of the files where the Nhits values are storaged}
+	\item{c1}{Sum of all the Nhits values for each chromosome}
+	\item{c2}{Sum of all the Nhits square values for each chromosome}
 }
 
 \references{ Muino et al. (submitted). Plant ChIP-seq Analyzer: An R package for the statistical detection of protein-bound genomic regions. \cr Kaufmann et al.(2009).Target genes of the MADS transcription factor SEPALLATA3: integration of developmental and hormonal pathways in the Arabidopsis flower. PLoS Biology; 7(4):e1000090.}
@@ -50,7 +54,7 @@ A list to be used for other functions of the CSAR package
 #For this example we will use the a subset of the SEP3 ChIP-seq data (Kaufmann, 2009)
 data("CSAR-dataset");
 #We calculate the number of hits for each nucleotide posotion for the sample. We do that just for chromosome chr1, and for positions from 1 bp to 10kb
-nhitsS<-mappedReads2Nhits(sampleSEP3_test,chr=c("CHR1v01212004"),chrL=c(10000))
+nhitsS<-mappedReads2Nhits(sampleSEP3_test,file="sampleSEP3_test",chr=c("CHR1v01212004"),chrL=c(10000))
 
 
 }

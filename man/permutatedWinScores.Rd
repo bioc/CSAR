@@ -6,7 +6,7 @@
 Calculate scores for permutated read-enriched regions
 }
 \usage{
-permutatedWinScores(nn = 1, control, sample, fileOutput, chr = c("chr1", "chr2", "chr3", "chr4", "chr5"), chrL = "TAIR8", w = 300, considerStrand = "Minimum", uniquelyMapped = TRUE, uniquePosition = FALSE, norm = 300 * 10^6, backg = 1, t = 2.9, g = 100)
+permutatedWinScores(nn = 1, control, sample, fileOutput, chr = c("chr1", "chr2", "chr3", "chr4", "chr5"), chrL = "TAIR8", w = 300, considerStrand = "Minimum", uniquelyMapped = TRUE, uniquePosition = FALSE, norm = 300 * 10^6, backg = 1, t = 2.9, g = 100,times=1e6,digits=2)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -33,7 +33,9 @@ permutatedWinScores(nn = 1, control, sample, fileOutput, chr = c("chr1", "chr2",
   \item{backg}{ Any region with a hit value lower than \code{backg} in the \code{control} will be set to the value of \code{backg} }
   \item{t}{Numeric value. Read-enriched regions are calculated as genomic regions with score values bigger than \code{t}  }
   \item{g}{ Integer value. The maximum gap allowed between regions. Regions that are less than \code{g} bps away will be merged. }
-  
+  \item{times}{ To be memory efficient, CSAR will only upload to the RAM memory fragments of length \code{times}. A bigger value means more RAM memory needed but whole process will be faster}
+  \item{digits}{Number of decimal digits used to report the score values}
+
 }
 \value{
    The file \code{filePutput} is created with the next columns:
@@ -60,8 +62,8 @@ Kaufmann et al.(2009).Target genes of the MADS transcription factor SEPALLATA3: 
 ##For this example we will use the a subset of the SEP3 ChIP-seq data (Kaufmann, 2009)
 data("CSAR-dataset");
 ##We calculate the number of hits for each nucleotide posotion for the control and sample. We do that just for chromosome chr1, and for positions 1 to 10kb
-nhitsS<-mappedReads2Nhits(sampleSEP3_test,chr=c("CHR1v01212004"),chrL=c(10000))
-nhitsC<-mappedReads2Nhits(controlSEP3_test,chr=c("CHR1v01212004"),chrL=c(10000))
+nhitsS<-mappedReads2Nhits(sampleSEP3_test,file="sampleSEP3_test",chr=c("CHR1v01212004"),chrL=c(10000))
+nhitsC<-mappedReads2Nhits(controlSEP3_test,file="controlSEP3_test",chr=c("CHR1v01212004"),chrL=c(10000))
 
 
 ##We calculate two sets of read-enrichment scores through permutation

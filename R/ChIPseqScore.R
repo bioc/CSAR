@@ -1,29 +1,49 @@
 `ChIPseqScore` <-
-function(control,sample,backg=1,file=NA,norm=300*10^6,chr=NA,test="Poisson"){
+function(control,sample,backg=1,file=NA,norm=300*10^6,test="Poisson",times=1e6,digits=2){
 # norm= -1 means no normalize by number of reads
-if(norm!= -1 &!is.na(norm)){
-sumcontrol=sum(unlist(control$Nhits))
-control$Nhits<-lapply(control$Nhits,function(x){as.integer(round(norm*x/sumcontrol))})
-sumsample=sum(unlist(sample$Nhits))
-sample$Nhits<-lapply(sample$Nhits,function(x){as.integer(round(norm*x/sumsample))})
+##comment errors
+if(length(intersect(as.character(control$filenames),as.character(sample$filenames)))>0){stop("Some files assigned to control and sample have the same name")}
+if(length(setdiff(sample$chr,control$chr))!=0){stop(paste(sample,"and",control,"have different chromosome names"))}
+normcontrol=1;normsample=1;
+if(norm!= -1 & !is.na(norm)){
+normcontrol=norm/sum(control$c1)
+normsample=norm/sum(sample$c1)
 }
-if(is.na(chr)){
-chr<-labels(sample$Nhits)
-}
-meansa<-mean(unlist(sample$Nhits))
-varsa<-var(unlist(sample$Nhits))
-meancon<-mean(unlist(control$Nhits))
-varcon<-var(unlist(control$Nhits))
-norm1<-(varcon/varsa)^.5;norm2<- -meansa+meancon
+nc<-sum(control$chrL);ns=sum(sample$chrL)
+ms<-sum(sample$c1)/ns*normsample
+mc<-sum(control$c1)/nc*normcontrol
+vc<-sum(control$c2)/(nc/(nc-1))*normcontrol^2-mc^2/(nc/(nc-1))
+vs<-sum(sample$c2)/(ns/(ns-1))*normsample^2-ms^2/(ns/(ns-1))
+backg<-max(1,backg,as.integer(round(sum(control$c1)/sum(control$chrL_0)*normcontrol)))
+filenames<-control$filenames
+for (i in 1:length(sample$chr)){
+file1<-file(description=paste(sample$chr[i],"_",file,".CSARScore",sep=""),"wb")
+filenames[i]<-paste(sample$chr[i],"_",file,".CSARScore",sep="")
+con1<-file(description=control$filenames[i],"rb");
+type=readBin(con=con1,what="character"); version=readBin(con=con1,what="character"); considerStrand=readBin(con=con1,what="character"); w=readBin(con=con1,what="integer"); uniquelyMapped=readBin(con=con1,what="logical"); uniquePosition=readBin(con=con1,what="logical"); chr=readBin(con=con1,what="character");chrL=readBin(con=con1,what="integer")
+con2<-file(description=sample$filenames[i],"rb");
+type=readBin(con=con2,what="character"); version=readBin(con=con2,what="character"); considerStrand=readBin(con=con2,what="character"); w=readBin(con=con2,what="integer"); uniquelyMapped=readBin(con=con2,what="logical"); uniquePosition=readBin(con=con2,what="logical"); chr=readBin(con=con2,what="character");chrL=readBin(con=con2,what="integer")
+writeBin("CSARScore",con=file1); writeBin(version,con=file1); writeBin(considerStrand,con=file1); writeBin(w,con=file1); writeBin(uniquelyMapped,con=file1); writeBin(uniquePosition,con=file1);writeBin(as.character(chr),con=file1); writeBin(chrL,con=file1)
+j=1L;times<-as.integer(times)
+while(j<=chrL ){
+score1=readBin(con=con1,n=times,what="integer")
+score2=readBin(con=con2,n=times,what="integer")
+score1<-score1*normcontrol
+score2<-score2*(normsample*(vc/vs)^.5)+(mc-ms)*(vc/vs)^.5
+score1[score1<backg]<-backg
+score2<-as.integer(round((-ppois(score2,score1,lower.tail=FALSE,log.p=TRUE))*10^digits))
+writeBin(score2,con=file1)
 
-for (i in chr){
-sample$Nhits[[i]]<-as.integer(score_chr(norm1=norm1,norm2=norm2,con=control$Nhits[[i]],sa=sample$Nhits[[i]],backg=backg,test=test))
-message(paste(i," done..."))
+j<-j+times;
 }
-experiment<-list(score=sample$Nhits,info=NA)
-if(!is.na(file)){
-save(experiment,file=file)
+close(con1)
+close(con2)
+close(file1)
+gc(verbose=FALSE)
+message(paste(sample$chr[i]," done..."))
 }
-return(experiment)
+info<-list(chr=sample$chr,chrL=sample$chrL,filenames=filenames,digits=digits)
+rm(score1,score2);gc(verbose=FALSE)
+return(info)
 }
 

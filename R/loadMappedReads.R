@@ -13,6 +13,7 @@ output<-read.table(file=file,comment.char = "",col.names=format,colClasses = rep
 output<-data.frame(Nhits=as.integer(output$Nhits),lengthRead=as.integer(output$lengthRead),strand=output$strand,chr=output$chr,pos=as.integer(output$pos))
 }
 message(paste(length(output$pos),"reads loaded from file:",file))
+gc(verbose=FALSE)
 return(output)
 }
 

@@ -1,23 +1,19 @@
 `sigWin_chr` <-
 function(count,t,g){
-p1=-1;p2=-1;co=0;ma=0;posmax=0;res<-c();
-pos=1:length(count);
-for(i in pos){
-if(count[i]>=t){
-if(-p2+pos[i]<=1+g ){
-p2=pos[i];co=co+count[i];
-if(count[i]>ma){ma<-count[i];posmax<-pos[i]};
+pos=(1:length(count))[(count>=t)];
+;gc(verbose=FALSE)
+start<-pos[c(TRUE,(pos[-1]-pos[-length(pos)])>g)]
+end<-pos[c((pos[-length(pos)]-pos[-1])< -g,TRUE)]
+gc(verbose=FALSE)
+maxpos<-rep(0,length(start))
+maxscore<-rep(0,length(start))
+for(i in 1:length(start)){###################CHECK
+temppos<-start[i]:end[i]
+tempcount<-count[temppos]
+maxscore[i]<-max(tempcount)
+maxpos[i]<-temppos[tempcount==maxscore[i]][1]
 }
-else {
-if(ma>=t){
-res<-append(res,c(p1,p2,posmax,ma,p2-p1));
-}
-p1=pos[i];p2=pos[i];co=0;posmax=pos[i];ma=0;
-
-}
-}
-}
-res=as.data.frame(matrix(res,ncol=5, byrow = TRUE))
-return(res)
+rm(count);gc(verbose=FALSE)
+return(data.frame(start=start,end=end,posPeak=maxpos,score=maxscore,length=end-start))
 }
 

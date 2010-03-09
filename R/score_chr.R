@@ -1,16 +1,14 @@
 `score_chr` <-
-function(norm1,norm2,sa,con,t=-1,backg=1,test="Poisson"){
-
-sa<-(sa+norm2)*norm1
+function(sa,con,backg=1,test="Poisson"){
 sa.nnucs<-sum(sa)
 con.nnucs<-sum(con)
-##Apply quantile normalization ???
-la=mean(con[con>0]);la<-max(1,la,backg)####Minimum coverage
 if(test=="Poisson"){
-con<-con*sa.nnucs/con.nnucs
-con[con<la]<-la
-con<- -(ppois(sa,con,lower.tail=FALSE,log.p=TRUE))}
-if(test=="Ratio"){con[con<la]<-la;con<-sa/con}
+con<-con*as.integer(round(sa.nnucs/con.nnucs))
+con[con<backg]<-backg
+gc(verbose=FALSE)
+con<-as.integer( round(-(ppois(sa,con,lower.tail=FALSE,log.p=TRUE))))}
+if(test=="Ratio"){con[con<backg]<-backg;con<-as.integer(round(sa/con))}
+rm(sa);gc(verbose=FALSE)
 return(con)
 }
 
