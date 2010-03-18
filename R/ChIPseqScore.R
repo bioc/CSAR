@@ -6,15 +6,15 @@ if(length(intersect(as.character(control$filenames),as.character(sample$filename
 if(length(setdiff(sample$chr,control$chr))!=0){stop(paste(sample,"and",control,"have different chromosome names"))}
 normcontrol=1;normsample=1;
 if(norm!= -1 & !is.na(norm)){
-normcontrol=norm/sum(control$c1)
-normsample=norm/sum(sample$c1)
+normcontrol=norm/sum(as.numeric(control$c1))
+normsample=norm/sum(as.numeric(sample$c1))
 }
-nc<-sum(control$chrL);ns=sum(sample$chrL)
-ms<-sum(sample$c1)/ns*normsample
-mc<-sum(control$c1)/nc*normcontrol
-vc<-sum(control$c2)/(nc/(nc-1))*normcontrol^2-mc^2/(nc/(nc-1))
-vs<-sum(sample$c2)/(ns/(ns-1))*normsample^2-ms^2/(ns/(ns-1))
-backg<-max(1,backg,as.integer(round(sum(control$c1)/sum(control$chrL_0)*normcontrol)))
+nc<-sum(as.numeric(control$chrL));ns=sum(as.numeric(sample$chrL))
+ms<-sum(as.numeric(sample$c1))/ns*normsample
+mc<-sum(as.numeric(control$c1))/nc*normcontrol
+vc<-sum(as.numeric(control$c2))/(nc/(nc-1))*normcontrol^2-mc^2/(nc/(nc-1))
+vs<-sum(as.numeric(sample$c2))/(ns/(ns-1))*normsample^2-ms^2/(ns/(ns-1))
+backg<-max(1,backg,as.integer(round(sum(as.numeric(control$c1))/sum(as.numeric(control$chrL_0))*normcontrol)))
 filenames<-control$filenames
 for (i in 1:length(sample$chr)){
 file1<-file(description=paste(sample$chr[i],"_",file,".CSARScore",sep=""),"wb")
