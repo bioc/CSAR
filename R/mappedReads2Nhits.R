@@ -1,5 +1,5 @@
 `mappedReads2Nhits` <-
-function(input,file,chr=c("chr1","chr2","chr3","chr4","chr5"),chrL="TAIR8",w=300L,considerStrand="Minimum",uniquelyMapped=TRUE,uniquePosition=FALSE){
+function(input,file,chr=c("chr1","chr2","chr3","chr4","chr5"),chrL="TAIR9",w=300L,considerStrand="Minimum",uniquelyMapped=TRUE,uniquePosition=FALSE){
 if(length(file)==0){stop("Parameter file has not value")}
 if(!is.na(w)){
 w<-as.integer(w)
@@ -11,19 +11,20 @@ stop("ERROR: parameter w has an incorrect value")
 ##The table format should have, at least, the headers: Nhits	lengthRead	strand	chr	pos, or being a AlignedRead class object
 ##If file is a AlignedRead class
 if(class(input)=="AlignedRead"){
-input<-data.frame(Nhits=as.integer(input$Nhits),lengthRead=as.integer(input$lengthRead),strand=input$strand,chr=input$chr,pos=as.integer(input$pos))
+##No Nhits column
+if(uniquelyMapped){stop("ERROR: CSAR is not able to obtain information regarding number of hits on the genome of each read. If you want to use all the reads, please set uniquelyMapped parameter to FALSE")}
+input<-data.frame(lengthRead=as.integer(width(input)),strand=strand(input),chr=chromosome(input),pos=as.integer(position(input)))
 }
+else {if(uniquelyMapped & length(input$Nhits)){stop("ERROR: No information regarding number of hits of each read is provided. If you want to use all the reads, please set uniquelyMapped parameter to FALSE")}}
 
-if(length(intersect(c("Nhits","lengthRead","strand","chr","pos"),names(input)))<5){
+if(length(intersect(c("lengthRead","strand","chr","pos"),names(input)))<4){
 stop("ERROR: input data has not all necessary columns: Nhits	lengthRead	strand	chr	pos")
 }
 ###Other TAIRs...
 if(length(chrL)==1 & is.character(chrL)){
-if(chrL=="TAIR8"){
-# This is the length of the TAIR8 chromosomes
-chrL=c(30432563,19705359,23470805,18585042,26992728)
-}
-}
+if(chrL=="TAIR8"){chrL=c(30432563,19705359,23470805,18585042,26992728)}
+if(chrL=="TAIR9"){chrL=c(30427671,19698289,23459830,18585056,26975502)}
+ }
 if(length(chrL)!=length(chr)){
 stop("ERROR: Chromosome names vector (chr) is of differnt length than chromosome length vector (chrL)")
 }
