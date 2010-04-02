@@ -12,10 +12,10 @@ stop("ERROR: parameter w has an incorrect value")
 ##If file is a AlignedRead class
 if(class(input)=="AlignedRead"){
 ##No Nhits column
-if(uniquelyMapped){stop("ERROR: CSAR is not able to obtain information regarding number of hits on the genome of each read. If you want to use all the reads, please set uniquelyMapped parameter to FALSE")}
+if(uniquelyMapped){stop("ERROR: CSAR is not able to obtain information for each read regarding the number of hits on the genome. If you want to use all the reads, please set uniquelyMapped parameter to FALSE")}
 input<-data.frame(lengthRead=as.integer(width(input)),strand=strand(input),chr=chromosome(input),pos=as.integer(position(input)))
 }
-else {if(uniquelyMapped & length(input$Nhits)){stop("ERROR: No information regarding number of hits of each read is provided. If you want to use all the reads, please set uniquelyMapped parameter to FALSE")}}
+else {if(uniquelyMapped & length(input$Nhits)==0){stop("ERROR: No information regarding number of hits of each read is provided. If you want to use all the reads, please set uniquelyMapped parameter to FALSE")}}
 
 if(length(intersect(c("lengthRead","strand","chr","pos"),names(input)))<4){
 stop("ERROR: input data has not all necessary columns: Nhits	lengthRead	strand	chr	pos")
