@@ -22,8 +22,8 @@ stop("ERROR: input data has not all necessary columns: Nhits	lengthRead	strand	c
 }
 ###Other TAIRs...
 if(length(chrL)==1 & is.character(chrL)){
-if(chrL=="TAIR8"){chrL=c(30432563,19705359,23470805,18585042,26992728)}
-if(chrL=="TAIR9"){chrL=c(30427671,19698289,23459830,18585056,26975502)}
+if(chrL=="TAIR8"){chrL=c(30432563,19705359,23470805,18585042,26992728)}else{
+if(chrL=="TAIR9"){chrL=c(30427671,19698289,23459830,18585056,26975502)}}
  }
 if(length(chrL)!=length(chr)){
 stop("ERROR: Chromosome names vector (chr) is of differnt length than chromosome length vector (chrL)")
