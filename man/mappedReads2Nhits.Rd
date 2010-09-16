@@ -10,10 +10,7 @@
   Calculate number of overlapped extended reads per nucleotide position
 }
 \usage{
-mappedReads2Nhits(input, file ,
-    chr = c("chr1", "chr2", "chr3", "chr4", "chr5"),
-    chrL = "TAIR9", w = 300, considerStrand = "Minimum",
-    uniquelyMapped = TRUE, uniquePosition = FALSE)
+mappedReads2Nhits(input, file , chr = c("chr1", "chr2", "chr3", "chr4", "chr5"), chrL = "TAIR9", w = 300L, considerStrand = "Minimum", uniquelyMapped = TRUE, uniquePosition = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -32,8 +29,9 @@ mappedReads2Nhits(input, file ,
   
   "Sum"=>Report the sum of number of hits at each nucleotide position for both strands.
   }
-  \item{uniquelyMapped}{Logic value, If TRUE, only consider unquely mapped reads.}
+  \item{uniquelyMapped}{Logic value, If TRUE, only consider uniquely mapped reads.}
   \item{uniquePosition}{Logic value. If TRUE, only consider reads mapped in different positions.}
+ 
   
 }
 
@@ -57,8 +55,7 @@ A list to be used for other functions of the CSAR package
 #For this example we will use the a subset of the SEP3 ChIP-seq data (Kaufmann, 2009)
 data("CSAR-dataset");
 #We calculate the number of hits for each nucleotide posotion for the sample. We do that just for chromosome chr1, and for positions from 1 bp to 10kb
-nhitsS<-mappedReads2Nhits(sampleSEP3_test, file="sampleSEP3_test",
-                          chr=c("CHR1v01212004"), chrL=c(10000))
+nhitsS<-mappedReads2Nhits(sampleSEP3_test,file="sampleSEP3_test",chr=c("CHR1v01212004"),chrL=c(10000))
 
 
 }

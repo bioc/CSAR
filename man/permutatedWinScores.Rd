@@ -6,7 +6,7 @@
 Calculate scores for permutated read-enriched regions
 }
 \usage{
-permutatedWinScores(nn = 1, control, sample, fileOutput, chr = c("chr1", "chr2", "chr3", "chr4", "chr5"), chrL = "TAIR8", w = 300, considerStrand = "Minimum", uniquelyMapped = TRUE, uniquePosition = FALSE, norm = 300 * 10^6, backg = 1, t = 2.9, g = 100,times=1e6,digits=2)
+permutatedWinScores(nn = 1, control, sample, fileOutput, chr = c("chr1", "chr2", "chr3", "chr4", "chr5"), chrL = "TAIR9", w = 300L, considerStrand = "Minimum", uniquelyMapped = TRUE, uniquePosition = FALSE, norm = 300 * 10^6, backg = 1, t = 2.9, g = 100,times=1e6,digits=2,test="Poisson")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -35,7 +35,7 @@ permutatedWinScores(nn = 1, control, sample, fileOutput, chr = c("chr1", "chr2",
   \item{g}{ Integer value. The maximum gap allowed between regions. Regions that are less than \code{g} bps away will be merged. }
   \item{times}{ To be memory efficient, CSAR will only upload to the RAM memory fragments of length \code{times}. A bigger value means more RAM memory needed but whole process will be faster}
   \item{digits}{Number of decimal digits used to report the score values}
-
+\item{test}{Use a score based on the poisson distribution ("Poisson") or in the ratio ("Ratio") }
 }
 \value{
    The file \code{filePutput} is created with the next columns:

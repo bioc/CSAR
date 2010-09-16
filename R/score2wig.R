@@ -1,9 +1,9 @@
 `score2wig` <-
-function(experiment,file,t=3,times=1e6){
+function(experiment,file,t=3,times=1e6,description="CSAR track",name="CSAR track"){
 if(!is.character(file)){stop("A name for the wig file is needed")}
 dig<-(10^experiment$digits);
 if(length(dig)==0){dig<-1}
-write("track type=wiggle_0 autoScale=on",file=file,1,append=FALSE);
+write(paste("track type=wiggle_0 autoScale=on name=\"",name,"\" description=\"",description,"\"",sep=""),file=file,1,append=FALSE);
 for (i in 1:length(experiment$chr)){
 write(paste(sep='',"variableStep  chrom=",experiment$chr[i],"  span=",1),file=file,1,append=TRUE,sep="\t");
 con<-file(description=experiment$filenames[i],"rb")
@@ -29,6 +29,5 @@ close(con)
 message(paste(experiment$chr[i],"done..."))
 }
 
-rm(pos,score);gc(verbose=FALSE)
 }
 

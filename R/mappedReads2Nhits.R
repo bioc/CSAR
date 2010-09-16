@@ -1,13 +1,8 @@
 `mappedReads2Nhits` <-
 function(input,file,chr=c("chr1","chr2","chr3","chr4","chr5"),chrL="TAIR9",w=300L,considerStrand="Minimum",uniquelyMapped=TRUE,uniquePosition=FALSE){
 if(length(file)==0){stop("Parameter file has not value")}
-if(!is.na(w)){
-w<-as.integer(w)
-}
-else{
-stop("ERROR: parameter w has an incorrect value")
-}
-
+if(!is.na(w)){w<-as.integer(w)}else{stop("ERROR: parameter w has an incorrect value")}
+if(!is.element(considerStrand,c("Minimum","Sum","Foward","Reverse"))){stop("ERROR: parameter considerStrand has an incorrect value")}
 ##The table format should have, at least, the headers: Nhits	lengthRead	strand	chr	pos, or being a AlignedRead class object
 ##If file is a AlignedRead class
 if(class(input)=="AlignedRead"){
@@ -26,7 +21,7 @@ if(chrL=="TAIR8"){chrL=c(30432563,19705359,23470805,18585042,26992728)}else{
 if(chrL=="TAIR9"){chrL=c(30427671,19698289,23459830,18585056,26975502)}}
  }
 if(length(chrL)!=length(chr)){
-stop("ERROR: Chromosome names vector (chr) is of differnt length than chromosome length vector (chrL)")
+stop("ERROR: Chromosome names vector (chr) is of different length than chromosome length vector (chrL)")
 }
 if(length(chr[is.element(chr,unique(input$chr))])==0){
 stop("ERROR: No overlap between chromosome names in mapped reads dataset and chr parameter")
@@ -37,7 +32,8 @@ input$pos[indices]<-input$pos[indices]-w+input$lengthRead[indices]
 rm(indices);
 
 #inf<-getInfoSoap(input)
-if(uniquelyMapped){input<-input[input$Nhits==1L,]};
+if(uniquelyMapped ){input<-input[input$Nhits==1L,]};
+
 if(uniquePosition){input<-input[!duplicated(paste(input$pos,input$chr)),]};
 
 indices <- split(seq_len(nrow(input)), input$chr)

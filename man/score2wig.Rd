@@ -8,7 +8,7 @@
   Save the read-enrichment scores  at each nucleotide position in a .wig file format that can be visualize by a genome browser (eg: Integrated Genome Browser)
 }
 \usage{
-score2wig(experiment, file, t = 3, times = 1e6)
+score2wig(experiment, file, t = 3, times = 1e6,description="CSAR track", name="CSAR track")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -16,7 +16,9 @@ score2wig(experiment, file, t = 3, times = 1e6)
   \item{file}{ Name of the output .wig file}
   \item{t}{ Only nucleotide positions with a read-enrichment score bigger than \code{t} will be reported }
   \item{times}{ To be memory efficient, CSAR will only upload to the RAM memory fragments of length \code{times}. A bigger value means more RAM memory needed but whole process will be faster}
-}
+\item{description}{ Character. It adds a description to the wig file. The description will be shown by the genome browser used to visualize the wig file. }
+\item{name}{ Character. It adds a wig to the wig file. The name will be shown by the genome browser used to visualize the wig file. }
+  }
 
 \value{
   None. Results are printed in a file
