@@ -9,12 +9,14 @@ if(norm!= -1 & !is.na(norm)){
 normcontrol=norm/sum(as.numeric(control$c1))
 normsample=norm/sum(as.numeric(sample$c1))
 }
+if(normcontrol<1){warning("The value of parameter \"norm\" is lower than w * number of mapped reads for the control.\nThis may decrease the range for the test score values, and cause problems calculating the FDR thresholds with permutations.\nPlease, consider to increase the value of the parameter \"norm\"")}
 nc<-sum(as.numeric(control$chrL));ns=sum(as.numeric(sample$chrL))
 ms<-sum(as.numeric(sample$c1))/ns*normsample
 mc<-sum(as.numeric(control$c1))/nc*normcontrol
 vc<-sum(as.numeric(control$c2))/(nc/(nc-1))*normcontrol^2-mc^2/(nc/(nc-1))
 vs<-sum(as.numeric(sample$c2))/(ns/(ns-1))*normsample^2-ms^2/(ns/(ns-1))
-backg<-max(1,backg,as.integer(round(sum(as.numeric(control$c1))/sum(as.numeric(control$chrL_0))*normcontrol)))
+##Background modified
+backg<-max(1,(backg*normsample-ms)*(vc/vs)^.5 + mc,as.integer(round((sum(as.numeric(sample$c1))/sum(as.numeric(sample$chrL_0))*normsample-ms)*(vc/vs)^.5 + mc)))
 filenames<-control$filenames
 for (i in 1:length(sample$chr)){
 file1<-file(description=paste(sample$chr[i],"_",file,".CSARScore",sep=""),"wb")
@@ -28,10 +30,11 @@ j=1L;times<-as.integer(times)
 while(j<=chrL ){
 score1=readBin(con=con1,n=times,what="integer")
 score2=readBin(con=con2,n=times,what="integer")
-score1<-score1*normcontrol
-score2<-score2*(normsample*(vc/vs)^.5)+(mc-ms)*(vc/vs)^.5
+score1<-as.numeric(score1*normcontrol)
+score2<-as.numeric(((score2*normsample-ms)*(vc/vs)^.5)+mc)
 score1[score1<backg]<-backg
-score2<-as.integer(round((-ppois(score2,score1,lower.tail=FALSE,log.p=TRUE))*10^digits))
+if(test=="Poisson"){score2<-as.integer(round((-ppois(score2,score1,lower.tail=FALSE,log.p=TRUE))*10^digits))}
+if(test=="Ratio"){score2<-as.integer(round((score2/score1)*10^digits))}
 writeBin(score2,con=file1)
 
 j<-j+times;

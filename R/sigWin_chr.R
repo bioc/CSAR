@@ -1,6 +1,6 @@
 `sigWin_chr` <-
 function(count,t,g){
-pos=(1:length(count))[(count>=t)];
+pos=(1:length(count))[(count>t)];
 ;gc(verbose=FALSE)
 start<-pos[c(TRUE,(pos[-1]-pos[-length(pos)])>g)]
 end<-pos[c((pos[-length(pos)]-pos[-1])< -g,TRUE)]
@@ -14,6 +14,6 @@ maxscore[i]<-max(tempcount)
 maxpos[i]<-temppos[tempcount==maxscore[i]][1]
 }
 rm(count);gc(verbose=FALSE)
-return(data.frame(start=start,end=end,posPeak=maxpos,score=maxscore,length=end-start))
+return(data.frame(start=start,end=end,posPeak=maxpos,score=maxscore,length=end-start+1))
 }
 
