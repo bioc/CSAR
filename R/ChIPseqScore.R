@@ -16,7 +16,7 @@ mc<-sum(as.numeric(control$c1))/nc*normcontrol
 vc<-sum(as.numeric(control$c2))/(nc)*normcontrol^2-mc^2
 vs<-sum(as.numeric(sample$c2))/(ns)*normsample^2-ms^2
 ##Background modified
-backg<-as.integer(round(max(1,((backg*normsample-ms)*(vc/vs)^.5 + mc),((sum(as.numeric(sample$c1))/sum(as.numeric(sample$chrL_0))*normsample-ms)*(vc/vs)^.5 + mc))))
+backg<-as.integer(round(max(1,((backg*normsample)),((sum(as.numeric(sample$c1))/sum(as.numeric(sample$chrL_0))*normsample-ms)*(vc/vs)^.5 + mc))))
 filenames<-control$filenames
 for (i in 1:length(sample$chr)){
 file1<-file(description=paste(sample$chr[i],"_",file,".CSARScore",sep=""),"wb")
