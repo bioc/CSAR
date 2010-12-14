@@ -13,10 +13,10 @@ if(normcontrol<1){warning("The value of parameter \"norm\" is lower than w * num
 nc<-sum(as.numeric(control$chrL));ns=sum(as.numeric(sample$chrL))
 ms<-sum(as.numeric(sample$c1))/ns*normsample
 mc<-sum(as.numeric(control$c1))/nc*normcontrol
-vc<-sum(as.numeric(control$c2))/(nc/(nc-1))*normcontrol^2-mc^2/(nc/(nc-1))
-vs<-sum(as.numeric(sample$c2))/(ns/(ns-1))*normsample^2-ms^2/(ns/(ns-1))
+vc<-sum(as.numeric(control$c2))/(nc)*normcontrol^2-mc^2
+vs<-sum(as.numeric(sample$c2))/(ns)*normsample^2-ms^2
 ##Background modified
-backg<-max(1,(backg*normsample-ms)*(vc/vs)^.5 + mc,as.integer(round((sum(as.numeric(sample$c1))/sum(as.numeric(sample$chrL_0))*normsample-ms)*(vc/vs)^.5 + mc)))
+backg<-as.integer(round(max(1,(backg*normsample),((sum(as.numeric(sample$c1))/sum(as.numeric(sample$chrL_0))*normsample-ms)*(vc/vs)^.5 + mc))))
 filenames<-control$filenames
 for (i in 1:length(sample$chr)){
 file1<-file(description=paste(sample$chr[i],"_",file,".CSARScore",sep=""),"wb")
