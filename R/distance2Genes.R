@@ -1,5 +1,5 @@
 `distance2Genes` <-
-function(win,gff,t= -log(0.05),d1=-3000,d2=1000){
+function(win,gff,t= 1,d1=-3000,d2=1000){
 win<-win[win$score>t,]
 ## I can not know the final length of res, it will depends about how close the peaks and genes are.
 peakName<-c();p1<-c();p2<-c();score<-c();gene<-c();le<-c();

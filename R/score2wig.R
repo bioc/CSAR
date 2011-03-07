@@ -1,5 +1,5 @@
 `score2wig` <-
-function(experiment,file,t=3,times=1e6,description="CSAR track",name="CSAR track"){
+function(experiment,file,t=2,times=1e6,description="",name=""){
 if(!is.character(file)){stop("A name for the wig file is needed")}
 dig<-(10^experiment$digits);
 if(length(dig)==0){dig<-1}

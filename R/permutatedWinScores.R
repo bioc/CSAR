@@ -1,5 +1,5 @@
 `permutatedWinScores` <-
-function(nn=1,control,sample,fileOutput,chr=c("chr1","chr2","chr3","chr4","chr5"),chrL="TAIR9",w=300L,considerStrand="Minimum",uniquelyMapped=TRUE,uniquePosition=FALSE,norm=300*10^6,backg=1,t=2.9,g=100,times=1e6,digits=2,test="Poisson"){ 
+function(nn=1,control,sample,fileOutput,chr=c("chr1","chr2","chr3","chr4","chr5"),chrL="TAIR9",w=300L,considerStrand="Minimum",uniquelyMapped=TRUE,uniquePosition=FALSE,norm=3*10^9,backg=-1,t=1,g=100,times=1e6,digits=2,test="Ratio"){ 
 if(uniquelyMapped){sample<-sample[sample$Nhits==1L,];control<-control[control$Nhits==1L,];};
 if(uniquePosition){sample<-sample[!duplicated(paste(sample$pos,sample$strand)),];control<-control[!duplicated(paste(control$pos,control$strand)),]};
 whichsample<-sample(c(rep(TRUE,length(sample[,1])),rep(FALSE,length(control[,1]))))

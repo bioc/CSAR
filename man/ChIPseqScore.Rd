@@ -7,7 +7,7 @@
   Calculate read-enrichment scores for each nucleotide position
 }
 \usage{
-ChIPseqScore(control, sample, backg = 1, file = NA, norm = 300 * 10^6,  test = "Poisson",times=1e6,digits=2)
+ChIPseqScore(control, sample, backg = -1, file = NA, norm = 3 * 10^9,  test = "Ratio",times=1e6,digits=2)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

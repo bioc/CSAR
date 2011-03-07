@@ -8,7 +8,7 @@
   Save the read-enrichment scores  at each nucleotide position in a .wig file format that can be visualize by a genome browser (eg: Integrated Genome Browser)
 }
 \usage{
-score2wig(experiment, file, t = 3, times = 1e6,description="CSAR track", name="CSAR track")
+score2wig(experiment, file, t = 2, times = 1e6,description="", name="")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

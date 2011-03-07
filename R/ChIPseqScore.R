@@ -1,5 +1,5 @@
 `ChIPseqScore` <-
-function(control,sample,backg=1,file=NA,norm=300*10^6,test="Poisson",times=1e6,digits=2){
+function(control,sample,backg= -1,file=NA,norm=3*10^9,test="Ratio",times=1e6,digits=2){
 # norm= -1 means no normalize by number of reads
 ##comment errors
 if(length(intersect(as.character(control$filenames),as.character(sample$filenames)))>0){stop("Some files assigned to control and sample have the same name")}
@@ -18,7 +18,7 @@ vs<-sum(as.numeric(sample$c2))/(ns)*normsample^2-ms^2
 ##Background modified
 if(backg== -1){backg<-((sum(as.numeric(sample$c1))/sum(as.numeric(sample$chrL_0))*normsample-ms)*(vc/vs)^.5)+mc}
 #if(backg== -1){backg<-(sum(as.numeric(control$c1))/sum(as.numeric(control$chrL_0))*normcontrol)}
-else{backg<-((backg*normcontrol))}
+else{backg<-((backg*normsample-ms)*(vc/vs)^.5)+mc}
 backg<-as.integer(round(max(1,backg)))
 filenames<-control$filenames
 for (i in 1:length(sample$chr)){

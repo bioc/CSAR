@@ -1,5 +1,5 @@
 `score_chr` <-
-function(sa,con,backg=1,test="Poisson"){
+function(sa,con,backg=-1,test="Ratio"){
 sa.nnucs<-sum(sa)
 con.nnucs<-sum(con)
 if(test=="Poisson"){

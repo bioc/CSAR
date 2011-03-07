@@ -7,7 +7,7 @@
   Calculate regions of read-enrichment
 }
 \usage{
-sigWin(experiment, t = -log(0.05), g = 100)
+sigWin(experiment, t = 1, g = 100)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

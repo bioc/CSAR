@@ -6,7 +6,7 @@
   Calculate relative positions of read-enrichment regions regarding gene position
 }
 \usage{
-distance2Genes(win, gff, t = -log(0.05), d1 = -3000, d2 = 1000)
+distance2Genes(win, gff, t = 1, d1 = -3000, d2 = 1000)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

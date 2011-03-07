@@ -1,5 +1,5 @@
 `sigWin` <-
-function(experiment,t=-log(0.05),g=100){
+function(experiment,t=1,g=100){
 if(length(experiment$digits)==0){experiment$digits<-2}
 dig<-10^experiment$digits
 t<-as.integer(t*dig);g<-as.integer(round(g));
