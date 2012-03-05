@@ -1,0 +1,25 @@
+citHeader("To cite the R package 'CSAR' in your publication please use:")
+
+citEntry(entry  = "article",
+         title  = "ChIP-seq Analysis in R (CSAR): An R package for the statistical detection of protein-bound genomic regions",
+         author = personList(
+                 person(first="JM", last="Muino"),
+                 person(first="K", last="Kaufmann"),
+                 person(first="RCHJ", last="van Ham"),
+                 person(first="GC", last="Angenent"),
+                 person(first="P", last="Krajewski")
+                 
+			),
+	    journal = "Plant Methods",
+	    year = "2011",
+	    volume  = "7",
+	    number =  "1",
+
+		note = paste("R package version ", R.Version()$major, ".", R.Version()$minor, sep = ""),
+		textVersion = paste("JM. Muino*, K. Kaufmann, RCHJ. van Ham, GC. Angenent and P. Krajewski. (2011) ChIP-seq Analysis in R (CSAR): An R package for the statistical detection of protein-bound genomic regions, Plant Methods, 7:11. DOI 10.1186/1746-4811-7-11")
+	)
+
+citFooter("This free open-source software implements academic
+research by the authors and co-workers. If you use it,
+please support the project by citing the appropriate
+journal articles.")
