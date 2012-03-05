@@ -16,7 +16,7 @@
 
 \begin{document}
 \title{An Introduction to the CSAR Package}
-\date{November, 2009}
+
 \author{Jose M Muino\footnote{jose.muino@wur.nl}}
 \maketitle
 \begin{center}
