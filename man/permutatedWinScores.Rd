@@ -38,13 +38,7 @@ permutatedWinScores(nn = 1, control, sample, fileOutput, chr = c("chr1", "chr2",
 \item{test}{Use a score based on the poisson distribution ("Poisson") or in the ratio ("Ratio") }
 }
 \value{
-   The file \code{filePutput} is created with the next columns:
-     \item{chr }{Chromosome name}
-    \item{start }{Start of the read-enriched region}
-    \item{end }{End of the read-enriched region}
-    \item{posPeak }{Position of the maximum score value on the read-enriched region}
-    \item{score }{Maximum score value on the read-enriched region}
-    \item{length }{Read-enriched region length}
+   The file \code{filePutput} is created with its values being the permuated score values.
   
 }
 

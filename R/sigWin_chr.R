@@ -14,6 +14,6 @@ maxscore[i]<-max(tempcount)
 maxpos[i]<-temppos[tempcount==maxscore[i]][1]
 }
 rm(count);gc(verbose=FALSE)
-return(data.frame(start=start,end=end,posPeak=maxpos,score=maxscore,length=end-start+1))
+return(list(start=start,end=end,posPeak=maxpos,score=maxscore))
 }
 

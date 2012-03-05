@@ -1,14 +1,14 @@
 Package: CSAR
 Type: Package
 Title: Statistical tools for the analysis of ChIP-seq data
-Version: 1.7.0
+Version: 1.7.1
 Date: 2009-11-09
 Author: Jose M Muino
 Description: Statistical tools for ChIP-seq data analysis. The package includes the statistical  method described in Kaufmann et al. (2009) PLoS Biology: 7(4):e1000090. Briefly, Taking the average DNA fragment size subjected to sequencing into account, the software calculates genomic single-nucleotide read-enrichment values. After normalization, sample and control are compared using a test based on the Poisson distribution. Test statistic thresholds to control the false discovery rate are obtained through random permutation.
-Depends: R(>= 2.6.0)
+Depends: R(>= 2.6.0), IRanges, GenomicRanges
 Maintainer: Jose M Muino <jose.muino@wur.nl>
 Suggests: ShortRead, Biostrings
-Imports: stats, utils
+Imports: stats, utils, IRanges, GenomicRanges
 License: Artistic-2.0
 biocViews: ChIPseq,Transcription,Genetics
 LazyLoad: yes

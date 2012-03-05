@@ -13,7 +13,7 @@ test<-ChIPseqScore(control=NhitsC,sample=NhitsS,backg=backg,file=paste(fileOutpu
 unlink(NhitsC$filenames);unlink(NhitsS$filenames);
 win<-sigWin(experiment=test,t=t,g=g)
 file=paste(fileOutput,"-",nn,".permutatedWin",sep="")
-write.table(win,file=file,quote=FALSE,row.names=FALSE)
+cat(values(win)$score,file=file)
 unlink(test$filenames)
 message(paste("Win file for permutation",nn,"can be found at",file))
 }

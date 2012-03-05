@@ -72,7 +72,7 @@ win<-sigWin(test)
 head(win)
 score2wig(test,file="test.wig",times=10000)
 d<-distance2Genes(win=win,gff=TAIR8_genes_test)
-head(d)
+d
 genes<-genesWithPeaks(d)
 head(genes)
 @ 
@@ -84,7 +84,7 @@ From this distribution, several cut-off values can be calculated to control the 
 permutatedWinScores(nn=1,sample=sampleSEP3_test,control=controlSEP3_test,fileOutput="test",chr=c("CHR1v01212004"),chrL=c(100000))
 permutatedWinScores(nn=2,sample=sampleSEP3_test,control=controlSEP3_test,fileOutput="test",chr=c("CHR1v01212004"),chrL=c(100000))
 nulldist<-getPermutatedWinScores(file="test",nn=1:2)
-getThreshold(winscores=win$score,permutatedScores=nulldist,FDR=.05)
+getThreshold(winscores=values(win)$score,permutatedScores=nulldist,FDR=.05)
 @
 This is a very simple function to obtain the threshold value of our test statistic controlling FDR at a desired level. Basically, for each possible threshold value, the proportion of error type I is calculated assuming that  the permutated score distribution is a optimal estimation of the score distribution under the null hypothesis, and FDR is obtained as the ratio of the proportion of error type I by the proportion of significant tests. Other functions implemented in R (eg: \Rclass{multtest} ) could be less conservative.
 \bibliography{CSARVignette}{}

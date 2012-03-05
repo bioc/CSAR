@@ -18,13 +18,12 @@ sigWin(experiment, t = 1, g = 100)
 }
 
 \value{
-  A data.frame structure with the columns being:
-   \item{chr }{Chromosome name}
-  \item{start }{Start of the read-enriched region}
-  \item{end }{End of the read-enriched region}
+  An object of type'GRange' with its values being:
+   \item{seqnames}{Chromosome name}
+  \item{ranges }{An IRanges object indicating start and end of the read-enriched region}
   \item{posPeak }{Position of the maximum score value on the read-enriched region}
   \item{score }{Maximum score value on the read-enriched region}
-  \item{length }{Read-enriched region length}
+ 
   
 }
 \references{ Muino et al. (submitted). Plant ChIP-seq Analyzer: An R package for the statistcal detection of protein-bound genomic regions. \cr

@@ -62,7 +62,7 @@ nulldist<-getPermutatedWinScores(file="test",nn=1:2)
 ##From this distribution, several cut-off values can be calculated to control the error of our test. 
 ##Several functions  in R can be used for this purpose.
 ##In this package we had implemented a simple method for the control of the error based on FDR"
-getThreshold(winscores=win$score,permutatedScores=nulldist,FDR=.01)
+getThreshold(winscores=values(win)$score,permutatedScores=nulldist,FDR=.01)
 
 
 }

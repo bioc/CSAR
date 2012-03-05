@@ -10,7 +10,7 @@ distance2Genes(win, gff, t = 1, d1 = -3000, d2 = 1000)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{win}{ Data.frame structure obtained with the function \code{sigWin} }
+  \item{win}{ GRange structure obtained with the function \code{sigWin} }
   \item{gff}{ Data.frame structure obtained after loading a desired gff file}
   \item{t}{ Integer. Only distances of read-enriched regions with a score bigger than \code{t} will be considered}
   \item{d1}{ Negative integer. Minimum relative position regarding the start of the gene to be considered}
