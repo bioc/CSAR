@@ -10,8 +10,8 @@ if(max(x)>t){
 res<-sigWin_chr(count=x,t=t,g=g)
 res<-GRanges(seqnames=Rle(as.character(experiment$chr[i]),length(res$score)),
 ranges= IRanges(start=res$start,end=res$end), posPeak=res$posPeak,score=res$score)
+seqlengths(res)<-experiment$chrL[i]
 fin<-c(fin,res)}
-
 message(paste(experiment$chr[i],"done..."))
 }
 rm(x);gc(verbose=FALSE)
