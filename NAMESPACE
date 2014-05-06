@@ -2,10 +2,7 @@ useDynLib(CSAR)
 exportPattern("^[^\\.]")
 importFrom(stats, ppois)
 importFrom(utils, write.table)
-importFrom(IRanges, IRanges)
-importFrom(GenomicRanges,GRanges)
-importMethodsFrom(IRanges, as.factor, lapply, nrow, paste, pmin.int,
-    rbind, rep.int, Rle, table, values, "values<-")
-importMethodsFrom(GenomicRanges, duplicated, intersect,
-    "seqlengths<-", seqnames, setdiff, sort, split, strand, unique,
-    unlist, width)
+import(S4Vectors)
+import(IRanges)
+import(GenomeInfoDb)
+import(GenomicRanges)
