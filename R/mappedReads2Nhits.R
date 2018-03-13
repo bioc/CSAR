@@ -28,7 +28,7 @@ stop("ERROR: No overlap between chromosome names in mapped reads dataset and chr
 }
 ##Correct for SOAP (and other aligmenrs) way of mapping.  
 indices <- (input$strand=="-")
-input$pos[indices]<-input$pos[indices]-w+input$lengthRead[indices]
+#input$pos[indices]<-input$pos[indices]-w+input$lengthRead[indices]
 rm(indices);
 
 #inf<-getInfoSoap(input)
