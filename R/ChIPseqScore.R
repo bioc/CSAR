@@ -13,12 +13,11 @@ if(normcontrol<1){warning("The value of parameter \"norm\" is lower than w * num
 nc<-sum(as.numeric(control$chrL));ns=sum(as.numeric(sample$chrL))
 ms<-sum(as.numeric(sample$c1))/ns*normsample
 mc<-sum(as.numeric(control$c1))/nc*normcontrol
-vc<-sum(as.numeric(control$c2))/(nc)*normcontrol^2-mc^2
-vs<-sum(as.numeric(sample$c2))/(ns)*normsample^2-ms^2
+vc<-sum(as.numeric(control$c2))/(nc)*as.numeric(normcontrol)^2-mc^2
+vs<-sum(as.numeric(sample$c2))/(ns)*as.numeric(normsample)^2-ms^2
 ##Background modified
-if(backg== -1){backg<-((sum(as.numeric(sample$c1))/sum(as.numeric(sample$chrL_0))*normsample-ms)*(vc/vs)^.5)+mc}
-#if(backg== -1){backg<-(sum(as.numeric(control$c1))/sum(as.numeric(control$chrL_0))*normcontrol)}
-else{backg<-((backg*normsample-ms)*(vc/vs)^.5)+mc}
+#if(backg== -1){backg<-((sum(as.numeric(sample$c1))/sum(as.numeric(sample$chrL_0))*normsample-ms)*(vc/vs)^.5)+mc}
+#else{backg<-((backg*normsample-ms)*(vc/vs)^.5)+mc}
 backg<-as.integer(round(max(1,backg)))
 filenames<-control$filenames
 for (i in 1:length(sample$chr)){
