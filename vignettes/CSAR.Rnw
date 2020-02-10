@@ -3,6 +3,7 @@
 %\VignetteKeywords{ChIPseq,Transcription,Genetics}
 %\VignettePackage{CSAR}
 \documentclass{article}
+\usepackage[utf8]{inputenc} 
 
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
 \newcommand{\Rmethod}[1]{{\texttt{#1}}}
