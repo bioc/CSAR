@@ -1,7 +1,7 @@
 Package: CSAR
 Type: Package
 Title: Statistical tools for the analysis of ChIP-seq data
-Version: 1.65.0
+Version: 1.65.1
 Date: 2025-07-24
 Author: Jose M Muino
 Description: Statistical tools for ChIP-seq data analysis. The package
@@ -21,3 +21,4 @@ License: Artistic-2.0
 LazyLoad: yes
 LazyData: yes
 biocViews: ChIPSeq, Transcription, Genetics
+PackageStatus: Deprecated
